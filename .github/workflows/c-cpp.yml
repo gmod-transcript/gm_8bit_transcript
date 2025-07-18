@@ -14,9 +14,6 @@ jobs:
     build-linux:
         runs-on: ubuntu-22.04
         steps:
-            - name: Start build‑linux
-              run: echo "🛠️  Lancement du build Linux sur Ubuntu 22.04"
-
             - name: Checkout main repo
               uses: actions/checkout@v4
 
@@ -30,24 +27,20 @@ jobs:
 
             - name: Install Premake & dépendances
               run: |
-                  echo "📥  Téléchargement de Premake..."
                   wget https://github.com/premake/premake-core/releases/download/v5.0.0-beta2/premake-5.0.0-beta2-linux.tar.gz -O premake.tar.gz
                   tar -xzf premake.tar.gz
                   chmod +x premake5
                   sudo mv premake5 /usr/local/bin/
-                  echo "🔧  Mise à jour des paquets..."
                   sudo apt-get update
                   sudo apt-get install -y g++-multilib
                   gcc --version
 
             - name: Génération du projet avec Premake
               run: |
-                  echo "📐  Génération des makefiles..."
                   premake5 --gmcommon=garrysmod_common gmake
 
             - name: Compilation Linux
               run: |
-                  echo "🏗️  Compilation..."
                   cd projects/linux/gmake
                   make
                   make config=releasewithsymbols_x86_64
@@ -156,7 +149,7 @@ jobs:
               uses: softprops/action-gh-release@v1
               with:
                   tag_name: v${{ github.run_number }}
-                  name: Voice Recorder Build ${{ github.run_number }}
+                  name: Build ${{ github.run_number }}
                   body: |
                       Voice Recorder Module - Build ${{ github.run_number }}
 
